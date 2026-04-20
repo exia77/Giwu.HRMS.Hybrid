@@ -1,0 +1,190 @@
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject ThemeService Theme
+@inject AuthService Auth
+@inject IJSRuntime JS
+@implements IDisposable
+
+<div class="dash-wrap">
+  <div class="dash-sidebar">
+    <div class="brand">
+      <div class="brand-icon @(!string.IsNullOrEmpty(Theme.LogoDataUrl) ? "has-logo" : "")">
+        @if (!string.IsNullOrEmpty(Theme.LogoDataUrl))
+        {
+          <img src="@Theme.LogoDataUrl" class="brand-logo-sm" alt="logo" />
+        }
+        else
+        {
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="3" fill="white"/>
+            <line x1="8" y1="1" x2="8" y2="4" stroke="white" stroke-width="1.5"/>
+            <line x1="8" y1="12" x2="8" y2="15" stroke="white" stroke-width="1.5"/>
+            <line x1="1" y1="8" x2="4" y2="8" stroke="white" stroke-width="1.5"/>
+            <line x1="12" y1="8" x2="15" y2="8" stroke="white" stroke-width="1.5"/>
+            <line x1="3" y1="3" x2="5.2" y2="5.2" stroke="white" stroke-width="1.2"/>
+            <line x1="10.8" y1="10.8" x2="13" y2="13" stroke="white" stroke-width="1.2"/>
+            <line x1="13" y1="3" x2="10.8" y2="5.2" stroke="white" stroke-width="1.2"/>
+            <line x1="5.2" y1="10.8" x2="3" y2="13" stroke="white" stroke-width="1.2"/>
+          </svg>
+        }
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">@Theme.CompanyName</div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-section">Main</div>
+
+      <div class="@Nav("")" @onclick='() => Go("/")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        Dashboard
+      </div>
+
+      <div class="nav-section">People</div>
+
+      <div class="@Nav("employees")" @onclick='() => Go("/employees")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Employees
+      </div>
+
+      <div class="@Nav("departments")" @onclick='() => Go("/departments")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.8 1.8-4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M15 13c0-2.8-1.8-4-4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M5.5 9.5C6.3 9.2 7.1 9 8 9s1.7.2 2.5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Departments
+      </div>
+
+      <div class="@Nav("attendance")" @onclick='() => Go("/attendance")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 3V1.5M11 3V1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="2" y1="6.5" x2="14" y2="6.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="10" r="1" fill="currentColor"/><circle cx="8" cy="10" r="1" fill="currentColor"/><circle cx="10.5" cy="10" r="1" fill="currentColor"/></svg>
+        Attendance
+        <span class="badge">3</span>
+      </div>
+
+      <div class="@Nav("recruitment")" @onclick='() => Go("/recruitment")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2L9.5 6h4.5l-3.6 2.6 1.4 4.4L8 10.5 4.2 13l1.4-4.4L2 6h4.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Recruitment
+      </div>
+
+      <div class="nav-section">Payroll</div>
+
+      <div class="@Nav("payroll")" @onclick='() => Go("/payroll")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><line x1="1.5" y1="6.5" x2="14.5" y2="6.5" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="10" x2="7" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Payroll
+      </div>
+
+      <div class="@Nav("benefits")" @onclick='() => Go("/benefits")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 1v14M5 4.5C5 3.1 6.3 2 8 2s3 1.1 3 2.5S9.7 7 8 7s-3 1.1-3 2.5S6.3 12 8 12s3-1.1 3-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Benefits
+      </div>
+
+      <div class="nav-section">More</div>
+
+      <div class="@Nav("leave")" @onclick='() => Go("/leave")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-10 0 5 5 0 0 1 10 0z" stroke="currentColor" stroke-width="1.3"/><path d="M8 5.5V8l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Leave &amp; Time Off
+        <span class="badge">5</span>
+      </div>
+
+      <div class="@Nav("reports")" @onclick='() => Go("/reports")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M13 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" stroke="currentColor" stroke-width="1.3"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Reports
+      </div>
+
+      <div class="@Nav("settings")" @onclick='() => Go("/settings")'>
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.5v1.8M8 12.7v1.8M1.5 8h1.8M12.7 8h1.8M3.4 3.4l1.3 1.3M11.3 11.3l1.3 1.3M12.6 3.4l-1.3 1.3M4.7 11.3l-1.3 1.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar">JD</div>
+      <div>
+        <div class="footer-name">Jane Dela Cruz</div>
+        <div class="footer-role">HR Manager</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <div>
+        <div class="topbar-title">@TopbarTitle</div>
+        <div class="topbar-date-sub">@Today.ToString("dddd, MMMM d, yyyy")</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-badge">Q2 · Week @WeekNumber</div>
+        <button class="theme-toggle" @onclick="ToggleDark" title="Toggle dark/light mode">
+          @if (Theme.IsDark)
+          {
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.1 3.1l1.1 1.1M11.8 11.8l1.1 1.1M12.9 3.1l-1.1 1.1M4.2 11.8l-1.1 1.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          }
+          else
+          {
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          }
+        </button>
+        <div class="notif">
+          <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><path d="M8 1.5a5.5 5.5 0 0 1 5.5 5.5c0 3 1 4 1 4H1.5s1-1 1-4A5.5 5.5 0 0 1 8 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.3"/></svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="avatar topbar-avatar">JD</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      @Body
+    </div>
+
+    <div class="dash-watermark">
+      <GiwuWatermark IsDark="@Theme.IsDark" />
+    </div>
+  </div>
+</div>
+
+@code {
+    private string RelPath => Navigation.ToBaseRelativePath(Navigation.Uri);
+
+    private string Nav(string segment)
+    {
+        var active = segment == ""
+            ? RelPath is "" or "/"
+            : RelPath.StartsWith(segment, StringComparison.OrdinalIgnoreCase);
+        return active ? "nav-item active" : "nav-item";
+    }
+
+    private void Go(string path) => Navigation.NavigateTo(path);
+
+    private string TopbarTitle => RelPath.StartsWith("settings", StringComparison.OrdinalIgnoreCase)
+        ? "Settings"
+        : $"Good {Greeting}, Jane";
+
+    private string Greeting => DateTime.Now.Hour < 12 ? "morning"
+        : DateTime.Now.Hour < 17 ? "afternoon" : "evening";
+
+    private DateTime Today => DateTime.Now;
+    private int WeekNumber => System.Globalization.ISOWeek.GetWeekOfYear(DateTime.Now);
+
+    protected override void OnInitialized()
+    {
+        if (!Auth.IsLoggedIn)
+            Navigation.NavigateTo("/login");
+        Theme.OnChange += StateHasChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ApplyTheme();
+    }
+
+    private async Task ToggleDark()
+    {
+        Theme.SetDark(!Theme.IsDark);
+        await ApplyTheme();
+    }
+
+    private Task ApplyTheme() =>
+        JS.InvokeVoidAsync("document.documentElement.setAttribute",
+            "data-theme", Theme.IsDark ? "dark" : "light").AsTask();
+
+    public void Dispose() => Theme.OnChange -= StateHasChanged;
+}

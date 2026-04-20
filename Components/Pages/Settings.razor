@@ -1,0 +1,215 @@
+@page "/settings"
+@layout DashboardLayout
+@inject ThemeService Theme
+@inject IJSRuntime JS
+@implements IDisposable
+
+<div class="settings-wrap">
+
+    <!-- Branding -->
+    <div class="settings-section">
+        <div class="section-header">
+            <div class="section-title">Branding</div>
+            <div class="section-desc">Customize how your organization appears across the system</div>
+        </div>
+
+        <div class="settings-card">
+            <div class="field-row">
+                <div class="field-label">Company Name</div>
+                <div class="field-body">
+                    <input class="s-input" @bind="editName" placeholder="e.g. ACME Corporation" />
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field-row logo-row">
+                <div class="field-label">
+                    Company Logo
+                    <div class="field-hint">PNG, JPG, SVG · max 5 MB</div>
+                </div>
+                <div class="field-body logo-body">
+                    <div class="logo-preview-wrap">
+                        @if (!string.IsNullOrEmpty(editLogoUrl))
+                        {
+                            <img src="@editLogoUrl" class="logo-preview" alt="Logo preview" />
+                        }
+                        else
+                        {
+                            <div class="logo-placeholder">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                        }
+                    </div>
+                    <div class="logo-actions">
+                        <label class="upload-btn">
+                            <InputFile OnChange="HandleLogoUpload" accept="image/*" style="display:none" />
+                            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1v10M4 5l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Upload Logo
+                        </label>
+                        @if (!string.IsNullOrEmpty(editLogoUrl))
+                        {
+                            <button class="remove-btn" @onclick="RemoveLogo">Remove</button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field-row">
+                <div class="field-label">
+                    Primary Color
+                    <div class="field-hint">Used for buttons, highlights, and accents</div>
+                </div>
+                <div class="field-body">
+                    <div class="color-presets">
+                        @foreach (var (name, hex) in ColorPresets)
+                        {
+                            <button class="color-swatch @(editColor.Equals(hex, StringComparison.OrdinalIgnoreCase) ? "selected" : "")"
+                                    style="background:@hex" title="@name"
+                                    @onclick="() => editColor = hex">
+                                @if (editColor.Equals(hex, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                }
+                            </button>
+                        }
+                    </div>
+                    <div class="color-custom-row">
+                        <input type="color" class="color-picker" value="@editColor"
+                               @onchange="e => editColor = e.Value?.ToString() ?? editColor" />
+                        <span class="color-hex">@editColor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="settings-section">
+        <div class="section-header">
+            <div class="section-title">Appearance</div>
+            <div class="section-desc">Choose how the interface looks for all users</div>
+        </div>
+
+        <div class="settings-card">
+            <div class="field-row">
+                <div class="field-label">
+                    Theme
+                    <div class="field-hint">Applies across the entire application</div>
+                </div>
+                <div class="field-body">
+                    <div class="theme-options">
+                        <div class="theme-card @(!editDark ? "selected" : "")" @onclick="() => editDark = false">
+                            <div class="theme-preview light-preview">
+                                <div class="tp-bar"></div>
+                                <div class="tp-content">
+                                    <div class="tp-sidebar"></div>
+                                    <div class="tp-main"></div>
+                                </div>
+                            </div>
+                            <div class="theme-label">
+                                @if (!editDark)
+                                {
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#16a34a"/><path d="M3 6l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                }
+                                Light
+                            </div>
+                        </div>
+                        <div class="theme-card @(editDark ? "selected" : "")" @onclick="() => editDark = true">
+                            <div class="theme-preview dark-preview">
+                                <div class="tp-bar"></div>
+                                <div class="tp-content">
+                                    <div class="tp-sidebar"></div>
+                                    <div class="tp-main"></div>
+                                </div>
+                            </div>
+                            <div class="theme-label">
+                                @if (editDark)
+                                {
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#16a34a"/><path d="M3 6l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                }
+                                Dark
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save -->
+    <div class="settings-footer">
+        @if (saved)
+        {
+            <div class="saved-badge">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#16a34a"/><path d="M5 8l2.5 2.5L11 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Changes saved
+            </div>
+        }
+        <button class="save-btn" @onclick="SaveSettings">Save Changes</button>
+    </div>
+
+</div>
+
+@code {
+    private string editName = string.Empty;
+    private string editColor = string.Empty;
+    private string? editLogoUrl;
+    private bool editDark;
+    private bool saved;
+
+    private static readonly (string Name, string Hex)[] ColorPresets =
+    [
+        ("Indigo",  "#667eea"),
+        ("Blue",    "#2563eb"),
+        ("Teal",    "#0d9488"),
+        ("Purple",  "#7c3aed"),
+        ("Rose",    "#e11d48"),
+        ("Amber",   "#d97706"),
+        ("Green",   "#16a34a"),
+        ("Slate",   "#475569"),
+    ];
+
+    protected override void OnInitialized()
+    {
+        editName = Theme.CompanyName;
+        editColor = Theme.PrimaryColor;
+        editLogoUrl = Theme.LogoDataUrl;
+        editDark = Theme.IsDark;
+        Theme.OnChange += StateHasChanged;
+    }
+
+    private async Task SaveSettings()
+    {
+        Theme.SetCompanyName(editName);
+        Theme.SetPrimary(editColor);
+        Theme.SetLogo(editLogoUrl);
+        Theme.SetDark(editDark);
+        await JS.InvokeVoidAsync("document.documentElement.setAttribute",
+            "data-theme", editDark ? "dark" : "light");
+        saved = true;
+        await Task.Delay(2500);
+        saved = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleLogoUpload(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var file = e.File;
+            using var stream = file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var base64 = Convert.ToBase64String(ms.ToArray());
+            editLogoUrl = $"data:{file.ContentType};base64,{base64}";
+        }
+        catch { }
+    }
+
+    private void RemoveLogo() => editLogoUrl = null;
+
+    public void Dispose() => Theme.OnChange -= StateHasChanged;
+}

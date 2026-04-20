@@ -1,0 +1,136 @@
+@page "/"
+@layout DashboardLayout
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-label">Total employees</div>
+        <div class="stat-val">248</div>
+        <div class="stat-change up">+4 this month</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">On leave today</div>
+        <div class="stat-val">12</div>
+        <div class="stat-change neutral">5 pending approval</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Open positions</div>
+        <div class="stat-val">7</div>
+        <div class="stat-change" style="color:var(--color-text-warning)">3 urgent</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Payroll (Apr)</div>
+        <div class="stat-val">₱2.4M</div>
+        <div class="stat-change up">Processed</div>
+    </div>
+</div>
+
+<div class="row2">
+    <div class="card">
+        <div class="card-title">Recent employees <span class="card-sub">last 30 days</span></div>
+        <div class="emp-row">
+            <div class="emp-av" style="background:#E6F1FB;color:#0C447C">MR</div>
+            <div style="flex:1"><div class="emp-name">Maria Reyes</div><div class="emp-dept">Engineering</div></div>
+            <span class="pill green">Active</span>
+        </div>
+        <div class="emp-row">
+            <div class="emp-av" style="background:#EEEDFE;color:#3C3489">KS</div>
+            <div style="flex:1"><div class="emp-name">Karl Santos</div><div class="emp-dept">Sales</div></div>
+            <span class="pill green">Active</span>
+        </div>
+        <div class="emp-row">
+            <div class="emp-av" style="background:#E1F5EE;color:#085041">AL</div>
+            <div style="flex:1"><div class="emp-name">Ana Lim</div><div class="emp-dept">Finance</div></div>
+            <span class="pill amber">Probation</span>
+        </div>
+        <div class="emp-row">
+            <div class="emp-av" style="background:#FAEEDA;color:#633806">BT</div>
+            <div style="flex:1"><div class="emp-name">Ben Torres</div><div class="emp-dept">Operations</div></div>
+            <span class="pill blue">Onboarding</span>
+        </div>
+        <div class="emp-row">
+            <div class="emp-av" style="background:#FCEBEB;color:#791F1F">RC</div>
+            <div style="flex:1"><div class="emp-name">Rosa Cruz</div><div class="emp-dept">Marketing</div></div>
+            <span class="pill green">Active</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Leave requests <span class="card-sub">pending</span></div>
+        <div class="leave-item">
+            <div><div class="leave-name">Jose Ramos</div><div class="leave-date">Apr 21–23 · Sick leave</div></div>
+            <span class="pill amber">Pending</span>
+        </div>
+        <div class="leave-item">
+            <div><div class="leave-name">Liza Tan</div><div class="leave-date">Apr 24 · Vacation</div></div>
+            <span class="pill amber">Pending</span>
+        </div>
+        <div class="leave-item">
+            <div><div class="leave-name">Marco Sy</div><div class="leave-date">Apr 25–28 · Vacation</div></div>
+            <span class="pill amber">Pending</span>
+        </div>
+        <div class="leave-item">
+            <div><div class="leave-name">Nina Garcia</div><div class="leave-date">May 2 · Emergency</div></div>
+            <span class="pill red">Urgent</span>
+        </div>
+        <div class="leave-item">
+            <div><div class="leave-name">Danny Uy</div><div class="leave-date">May 5–6 · Vacation</div></div>
+            <span class="pill amber">Pending</span>
+        </div>
+    </div>
+</div>
+
+<div class="row3">
+    <div class="card">
+        <div class="card-title">Headcount by dept</div>
+        <div class="bar-wrap">
+            <div class="bar-label"><span>Engineering</span><span>74</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:74%;background:#378ADD"></div></div>
+        </div>
+        <div class="bar-wrap">
+            <div class="bar-label"><span>Sales</span><span>52</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:52%;background:#7F77DD"></div></div>
+        </div>
+        <div class="bar-wrap">
+            <div class="bar-label"><span>Operations</span><span>48</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:48%;background:#1D9E75"></div></div>
+        </div>
+        <div class="bar-wrap">
+            <div class="bar-label"><span>Finance</span><span>38</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:38%;background:#EF9F27"></div></div>
+        </div>
+        <div class="bar-wrap">
+            <div class="bar-label"><span>Marketing</span><span>36</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:36%;background:#D4537E"></div></div>
+        </div>
+    </div>
+
+    <div class="card" style="grid-column:span 2">
+        <div class="card-title">Quick actions</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#E6F1FB"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="7" cy="5" r="3" stroke="#185FA5" stroke-width="1.3"/><path d="M1.5 14c0-3 2.5-5 5.5-5" stroke="#185FA5" stroke-width="1.3" stroke-linecap="round"/><path d="M11.5 10v4M9.5 12h4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                <div><div class="quick-label">Add employee</div><div class="quick-desc">New hire onboarding</div></div>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#E1F5EE"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#0F6E56" stroke-width="1.3"/><line x1="1.5" y1="6.5" x2="14.5" y2="6.5" stroke="#0F6E56" stroke-width="1.3"/><line x1="5" y1="10" x2="7" y2="10" stroke="#0F6E56" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+                <div><div class="quick-label">Run payroll</div><div class="quick-desc">Process monthly pay</div></div>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#FAEEDA"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8l3 3 7-7" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="quick-label">Approve leave</div><div class="quick-desc">5 pending requests</div></div>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#EEEDFE"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 2h7l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="#534AB7" stroke-width="1.3"/><path d="M10 2v4h3" stroke="#534AB7" stroke-width="1.3"/><line x1="5" y1="9" x2="11" y2="9" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/><line x1="5" y1="12" x2="9" y2="12" stroke="#534AB7" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+                <div><div class="quick-label">Generate report</div><div class="quick-desc">Monthly HR summary</div></div>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#FAECE7"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2L9.5 6h4.5l-3.6 2.6 1.4 4.4L8 10.5 4.2 13l1.4-4.4L2 6h4.5z" stroke="#993C1D" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+                <div><div class="quick-label">Post job</div><div class="quick-desc">Open new position</div></div>
+            </div>
+            <div class="quick-item">
+                <div class="quick-icon" style="background:#EAF3DE"><svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="#3B6D11" stroke-width="1.3"/><path d="M5 3V1.5M11 3V1.5" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round"/><line x1="2" y1="6.5" x2="14" y2="6.5" stroke="#3B6D11" stroke-width="1.3"/></svg></div>
+                <div><div class="quick-label">Attendance</div><div class="quick-desc">View today's log</div></div>
+            </div>
+        </div>
+    </div>
+</div>
