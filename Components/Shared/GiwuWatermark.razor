@@ -1,90 +1,244 @@
-@if (IsDark)
+@inject ThemeService Theme
+@implements IDisposable
+
+@if (Theme.IsDark)
 {
-    <svg width="180" height="50" viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="dwbg2"><stop offset="0%" stop-color="#060d1a"/><stop offset="100%" stop-color="#010408"/></radialGradient>
-        <radialGradient id="dwcg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#eef8ff"/><stop offset="35%" stop-color="#88bbff" stop-opacity=".95"/><stop offset="100%" stop-color="#1a4fcc" stop-opacity="0"/></radialGradient>
-        <radialGradient id="dwhg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3a8fff" stop-opacity=".3"/><stop offset="100%" stop-color="#061228" stop-opacity="0"/></radialGradient>
-        <linearGradient id="dwrh2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a4fcc" stop-opacity=".2"/><stop offset="40%" stop-color="#88bbff"/><stop offset="60%" stop-color="#88bbff"/><stop offset="100%" stop-color="#1a4fcc" stop-opacity=".2"/></linearGradient>
-        <linearGradient id="dwrv2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a4fcc" stop-opacity=".2"/><stop offset="40%" stop-color="#88bbff"/><stop offset="60%" stop-color="#88bbff"/><stop offset="100%" stop-color="#1a4fcc" stop-opacity=".2"/></linearGradient>
-        <linearGradient id="dwtl2" x1="1" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#aad4ff"/><stop offset="100%" stop-color="#1a44aa" stop-opacity="0"/></linearGradient>
-        <linearGradient id="dwtr2" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#aad4ff"/><stop offset="100%" stop-color="#1a44aa" stop-opacity="0"/></linearGradient>
-        <linearGradient id="dwbl2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#aad4ff"/><stop offset="100%" stop-color="#1a44aa" stop-opacity="0"/></linearGradient>
-        <linearGradient id="dwbr2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#aad4ff"/><stop offset="100%" stop-color="#1a44aa" stop-opacity="0"/></linearGradient>
-        <linearGradient id="dwtg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2255bb" stop-opacity=".7"/><stop offset="45%" stop-color="#77aaff"/><stop offset="100%" stop-color="#3366cc" stop-opacity=".7"/></linearGradient>
-        <linearGradient id="dwdiv2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4477cc" stop-opacity="0"/><stop offset="35%" stop-color="#4477cc" stop-opacity=".55"/><stop offset="65%" stop-color="#4477cc" stop-opacity=".55"/><stop offset="100%" stop-color="#4477cc" stop-opacity="0"/></linearGradient>
-        <filter id="dwsf2"><feGaussianBlur stdDeviation="1.5"/></filter>
-        <filter id="dwcf2"><feGaussianBlur stdDeviation="4"/></filter>
-        <filter id="dwhf2"><feGaussianBlur stdDeviation="10"/></filter>
-        <filter id="dwdf2"><feGaussianBlur stdDeviation="1.5"/></filter>
-      </defs>
-      <rect width="360" height="100" fill="none" rx="8"/>
-      <g transform="translate(48,50)">
-        <circle cx="0" cy="0" r="38" fill="url(#dwhg2)" filter="url(#dwhf2)"><animate attributeName="r" values="30;45;30" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;.9;.4" dur="3s" repeatCount="indefinite"/></circle>
-        <rect x="-60" y="-1.5" width="120" height="3" fill="url(#dwrh2)" filter="url(#dwsf2)" opacity=".4"/>
-        <rect x="-60" y="-.6" width="120" height="1.2" fill="url(#dwrh2)"/>
-        <rect x="-1.5" y="-45" width="3" height="90" fill="url(#dwrv2)" filter="url(#dwsf2)" opacity=".4"/>
-        <rect x="-.6" y="-45" width="1.2" height="90" fill="url(#dwrv2)"/>
-        <line x1="0" y1="0" x2="-22" y2="-22" stroke="url(#dwtl2)" stroke-width="3" filter="url(#dwdf2)"><animate attributeName="opacity" values=".15;.9;.15" dur="2s" repeatCount="indefinite"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/></line>
-        <line x1="0" y1="0" x2="-22" y2="-22" stroke="url(#dwtl2)" stroke-width=".8"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/></line>
-        <line x1="0" y1="0" x2="22" y2="-22" stroke="url(#dwtr2)" stroke-width="3" filter="url(#dwdf2)"><animate attributeName="opacity" values=".15;.9;.15" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin=".5s"/></line>
-        <line x1="0" y1="0" x2="22" y2="-22" stroke="url(#dwtr2)" stroke-width=".8"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin=".5s"/></line>
-        <line x1="0" y1="0" x2="22" y2="22" stroke="url(#dwbr2)" stroke-width="3" filter="url(#dwdf2)"><animate attributeName="opacity" values=".15;.9;.15" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/></line>
-        <line x1="0" y1="0" x2="22" y2="22" stroke="url(#dwbr2)" stroke-width=".8"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/></line>
-        <line x1="0" y1="0" x2="-22" y2="22" stroke="url(#dwbl2)" stroke-width="3" filter="url(#dwdf2)"><animate attributeName="opacity" values=".15;.9;.15" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1.5s"/></line>
-        <line x1="0" y1="0" x2="-22" y2="22" stroke="url(#dwbl2)" stroke-width=".8"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1.5s"/></line>
-        <circle cx="0" cy="0" r="10" fill="url(#dwcg2)" filter="url(#dwcf2)"><animate attributeName="r" values="7;13;7" dur="2s" repeatCount="indefinite"/></circle>
-        <circle cx="0" cy="0" r="5" fill="#88bbff"><animate attributeName="r" values="3.5;6.5;3.5" dur="2s" repeatCount="indefinite"/><animate attributeName="fill" values="#66aaff;#cce4ff;#66aaff" dur="2s" repeatCount="indefinite"/></circle>
-        <circle cx="0" cy="0" r="2" fill="#eef8ff"><animate attributeName="opacity" values=".85;1;.85" dur="1.5s" repeatCount="indefinite"/></circle>
-      </g>
-      <text x="114" y="36" font-family="Arial,sans-serif" font-size="7" font-weight="400" fill="#4477cc" letter-spacing="2" opacity=".8">POWERED BY</text>
-      <text x="112" y="72" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="url(#dwtg2)" letter-spacing="5">GIWU<animate attributeName="opacity" values=".88;1;.88" dur="3s" repeatCount="indefinite"/></text>
+    <svg width="100%" viewBox="0 0 690 210" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title>Powered by GIWU</title>
+        <defs>
+            <radialGradient id="d-coreG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="40%" stop-color="#e8f0ff" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#aabbdd" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="d-haloG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="d-rH" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+                <stop offset="40%" stop-color="#ffffff"/>
+                <stop offset="60%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="d-rV" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+                <stop offset="40%" stop-color="#ffffff"/>
+                <stop offset="60%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="d-dTL" x1="1" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="d-dTR" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="d-dBL" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="d-dBR" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="d-tg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#aaaacc" stop-opacity="0.7"/>
+                <stop offset="45%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#aaaacc" stop-opacity="0.7"/>
+            </linearGradient>
+            <filter id="d-soft"><feGaussianBlur stdDeviation="1.5"/></filter>
+            <filter id="d-cBlur"><feGaussianBlur stdDeviation="5"/></filter>
+            <filter id="d-hBlur"><feGaussianBlur stdDeviation="12"/></filter>
+            <filter id="d-dGlow"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <g transform="translate(85,105)">
+            <circle cx="0" cy="0" r="55" fill="url(#d-haloG)" filter="url(#d-hBlur)">
+                <animate attributeName="r" values="45;65;45" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <rect x="-75" y="-2.5" width="150" height="5" fill="url(#d-rH)" filter="url(#d-soft)" opacity="0.5"/>
+            <rect x="-75" y="-1" width="150" height="2" fill="url(#d-rH)"/>
+            <rect x="-2.5" y="-75" width="5" height="150" fill="url(#d-rV)" filter="url(#d-soft)" opacity="0.5"/>
+            <rect x="-1" y="-75" width="2" height="150" fill="url(#d-rV)"/>
+            <line x1="0" y1="0" x2="-38" y2="-38" stroke="url(#d-dTL)" stroke-width="4" filter="url(#d-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="-38" stroke="url(#d-dTL)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="-38" stroke="url(#d-dTR)" stroke-width="4" filter="url(#d-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="-38" stroke="url(#d-dTR)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="38" stroke="url(#d-dBR)" stroke-width="4" filter="url(#d-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="38" stroke="url(#d-dBR)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="38" stroke="url(#d-dBL)" stroke-width="4" filter="url(#d-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="38" stroke="url(#d-dBL)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+            </line>
+            <circle cx="0" cy="0" r="14" fill="url(#d-coreG)" filter="url(#d-cBlur)">
+                <animate attributeName="r" values="10;18;10" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="7" fill="#e8f0ff">
+                <animate attributeName="r" values="5.5;8;5.5" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="fill" values="#ccddff;#ffffff;#ccddff" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="3" fill="#ffffff">
+                <animate attributeName="opacity" values="0.9;1;0.9" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+        <text x="220" y="75" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#888888" letter-spacing="3">POWERED BY</text>
+        <text x="217" y="140" font-family="Arial,sans-serif" font-size="58" font-weight="700" fill="#888888" letter-spacing="8">
+            GIWU
+        </text>
     </svg>
 }
 else
 {
-    <svg width="180" height="50" viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="lwbg2"><stop offset="0%" stop-color="#eef2fc"/><stop offset="100%" stop-color="#f6f8fd"/></radialGradient>
-        <radialGradient id="lwcg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffffff"/><stop offset="30%" stop-color="#3377cc" stop-opacity=".6"/><stop offset="100%" stop-color="#1038a0" stop-opacity="0"/></radialGradient>
-        <radialGradient id="lwhg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3377cc" stop-opacity=".18"/><stop offset="100%" stop-color="#3377cc" stop-opacity="0"/></radialGradient>
-        <linearGradient id="lwrh2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1038a0" stop-opacity=".1"/><stop offset="40%" stop-color="#2266dd"/><stop offset="60%" stop-color="#2266dd"/><stop offset="100%" stop-color="#1038a0" stop-opacity=".1"/></linearGradient>
-        <linearGradient id="lwrv2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1038a0" stop-opacity=".1"/><stop offset="40%" stop-color="#2266dd"/><stop offset="60%" stop-color="#2266dd"/><stop offset="100%" stop-color="#1038a0" stop-opacity=".1"/></linearGradient>
-        <linearGradient id="lwtl2" x1="1" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#2266dd"/><stop offset="100%" stop-color="#103888" stop-opacity="0"/></linearGradient>
-        <linearGradient id="lwtr2" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#2266dd"/><stop offset="100%" stop-color="#103888" stop-opacity="0"/></linearGradient>
-        <linearGradient id="lwbr2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2266dd"/><stop offset="100%" stop-color="#103888" stop-opacity="0"/></linearGradient>
-        <linearGradient id="lwbl2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2266dd"/><stop offset="100%" stop-color="#103888" stop-opacity="0"/></linearGradient>
-        <linearGradient id="lwtg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#102870" stop-opacity=".8"/><stop offset="45%" stop-color="#2255bb"/><stop offset="100%" stop-color="#102870" stop-opacity=".8"/></linearGradient>
-        <linearGradient id="lwdiv2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#99bbee" stop-opacity="0"/><stop offset="35%" stop-color="#99bbee" stop-opacity=".6"/><stop offset="65%" stop-color="#99bbee" stop-opacity=".6"/><stop offset="100%" stop-color="#99bbee" stop-opacity="0"/></linearGradient>
-        <filter id="lwsf2"><feGaussianBlur stdDeviation="1.5"/></filter>
-        <filter id="lwcf2"><feGaussianBlur stdDeviation="4"/></filter>
-        <filter id="lwhf2"><feGaussianBlur stdDeviation="10"/></filter>
-        <filter id="lwdf2"><feGaussianBlur stdDeviation="1.5"/></filter>
-      </defs>
-      <rect width="360" height="100" fill="none" rx="8"/>
-      <g transform="translate(48,50)">
-        <circle cx="0" cy="0" r="38" fill="url(#lwhg2)" filter="url(#lwhf2)"><animate attributeName="r" values="30;45;30" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;.9;.4" dur="3s" repeatCount="indefinite"/></circle>
-        <rect x="-60" y="-1.5" width="120" height="3" fill="url(#lwrh2)" filter="url(#lwsf2)" opacity=".3"/>
-        <rect x="-60" y="-.6" width="120" height="1.2" fill="url(#lwrh2)" opacity=".9"/>
-        <rect x="-1.5" y="-45" width="3" height="90" fill="url(#lwrv2)" filter="url(#lwsf2)" opacity=".3"/>
-        <rect x="-.6" y="-45" width="1.2" height="90" fill="url(#lwrv2)" opacity=".9"/>
-        <line x1="0" y1="0" x2="-22" y2="-22" stroke="url(#lwtl2)" stroke-width="3" filter="url(#lwdf2)"><animate attributeName="opacity" values=".1;.7;.1" dur="2s" repeatCount="indefinite"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/></line>
-        <line x1="0" y1="0" x2="-22" y2="-22" stroke="url(#lwtl2)" stroke-width=".8"><animate attributeName="opacity" values=".4;.95;.4" dur="2s" repeatCount="indefinite"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite"/></line>
-        <line x1="0" y1="0" x2="22" y2="-22" stroke="url(#lwtr2)" stroke-width="3" filter="url(#lwdf2)"><animate attributeName="opacity" values=".1;.7;.1" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin=".5s"/></line>
-        <line x1="0" y1="0" x2="22" y2="-22" stroke="url(#lwtr2)" stroke-width=".8"><animate attributeName="opacity" values=".4;.95;.4" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin=".5s"/><animate attributeName="y2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin=".5s"/></line>
-        <line x1="0" y1="0" x2="22" y2="22" stroke="url(#lwbr2)" stroke-width="3" filter="url(#lwdf2)"><animate attributeName="opacity" values=".1;.7;.1" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/></line>
-        <line x1="0" y1="0" x2="22" y2="22" stroke="url(#lwbr2)" stroke-width=".8"><animate attributeName="opacity" values=".4;.95;.4" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="x2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1s"/></line>
-        <line x1="0" y1="0" x2="-22" y2="22" stroke="url(#lwbl2)" stroke-width="3" filter="url(#lwdf2)"><animate attributeName="opacity" values=".1;.7;.1" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1.5s"/></line>
-        <line x1="0" y1="0" x2="-22" y2="22" stroke="url(#lwbl2)" stroke-width=".8"><animate attributeName="opacity" values=".4;.95;.4" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="x2" values="-17;-25;-17" dur="2s" repeatCount="indefinite" begin="1.5s"/><animate attributeName="y2" values="17;25;17" dur="2s" repeatCount="indefinite" begin="1.5s"/></line>
-        <circle cx="0" cy="0" r="10" fill="url(#lwcg2)" filter="url(#lwcf2)"><animate attributeName="r" values="7;13;7" dur="2s" repeatCount="indefinite"/></circle>
-        <circle cx="0" cy="0" r="5" fill="#2266dd"><animate attributeName="r" values="3.5;6.5;3.5" dur="2s" repeatCount="indefinite"/><animate attributeName="fill" values="#1a55cc;#4488ff;#1a55cc" dur="2s" repeatCount="indefinite"/></circle>
-        <circle cx="0" cy="0" r="2" fill="#ffffff"><animate attributeName="opacity" values=".85;1;.85" dur="1.5s" repeatCount="indefinite"/></circle>
-      </g>
-      <text x="114" y="36" font-family="Arial,sans-serif" font-size="7" font-weight="500" fill="#4472bb" letter-spacing="2" opacity=".85">POWERED BY</text>
-      <text x="112" y="72" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="url(#lwtg2)" letter-spacing="5">GIWU<animate attributeName="opacity" values=".88;1;.88" dur="3s" repeatCount="indefinite"/></text>
+     <svg width="100%" viewBox="0 0 690 210" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title>Powered by GIWU</title>
+        <defs>
+            <radialGradient id="l-coreG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#000000"/>
+                <stop offset="40%" stop-color="#0a1540" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="l-haloG" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#0a1540" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="l-rH" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0a1540" stop-opacity="0.3"/>
+                <stop offset="40%" stop-color="#0a1540"/>
+                <stop offset="60%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="l-rV" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a1540" stop-opacity="0.3"/>
+                <stop offset="40%" stop-color="#0a1540"/>
+                <stop offset="60%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="l-dTL" x1="1" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="l-dTR" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="l-dBL" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="l-dBR" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#0a1540" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="l-tg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#333355" stop-opacity="0.7"/>
+                <stop offset="45%" stop-color="#0a1540"/>
+                <stop offset="100%" stop-color="#333355" stop-opacity="0.7"/>
+            </linearGradient>
+            <filter id="l-soft"><feGaussianBlur stdDeviation="1.5"/></filter>
+            <filter id="l-cBlur"><feGaussianBlur stdDeviation="5"/></filter>
+            <filter id="l-hBlur"><feGaussianBlur stdDeviation="12"/></filter>
+            <filter id="l-dGlow"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+        <g transform="translate(85,105)">
+            <circle cx="0" cy="0" r="55" fill="url(#l-haloG)" filter="url(#l-hBlur)">
+                <animate attributeName="r" values="45;65;45" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <rect x="-75" y="-2.5" width="150" height="5" fill="url(#l-rH)" filter="url(#l-soft)" opacity="0.5"/>
+            <rect x="-75" y="-1" width="150" height="2" fill="url(#l-rH)"/>
+            <rect x="-2.5" y="-75" width="5" height="150" fill="url(#l-rV)" filter="url(#l-soft)" opacity="0.5"/>
+            <rect x="-1" y="-75" width="2" height="150" fill="url(#l-rV)"/>
+            <line x1="0" y1="0" x2="-38" y2="-38" stroke="url(#l-dTL)" stroke-width="4" filter="url(#l-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="-38" stroke="url(#l-dTL)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="-38" stroke="url(#l-dTR)" stroke-width="4" filter="url(#l-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="-38" stroke="url(#l-dTR)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+                <animate attributeName="y2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="38" stroke="url(#l-dBR)" stroke-width="4" filter="url(#l-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+            </line>
+            <line x1="0" y1="0" x2="38" y2="38" stroke="url(#l-dBR)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="x2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1s"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="38" stroke="url(#l-dBL)" stroke-width="4" filter="url(#l-dGlow)">
+                <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+            </line>
+            <line x1="0" y1="0" x2="-38" y2="38" stroke="url(#l-dBL)" stroke-width="1.2">
+                <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="x2" values="-30;-42;-30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+                <animate attributeName="y2" values="30;42;30" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+            </line>
+            <circle cx="0" cy="0" r="14" fill="url(#l-coreG)" filter="url(#l-cBlur)">
+                <animate attributeName="r" values="10;18;10" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="7" fill="#0a1540">
+                <animate attributeName="r" values="5.5;8;5.5" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="fill" values="#0d1a50;#000000;#0d1a50" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="0" cy="0" r="3" fill="#000000">
+                <animate attributeName="opacity" values="0.9;1;0.9" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+        <text x="220" y="75" font-family="Arial,sans-serif" font-size="20" font-weight="400"   letter-spacing="3">POWERED BY</text>
+        <text x="217" y="140" font-family="Arial,sans-serif" font-size="58" font-weight="700" letter-spacing="8">
+            GIWU
+        </text>
     </svg>
 }
 
 @code {
-    [Parameter] public bool IsDark { get; set; }
+    protected override void OnInitialized() => Theme.OnChange += StateHasChanged;
+    public void Dispose() => Theme.OnChange -= StateHasChanged;
 }

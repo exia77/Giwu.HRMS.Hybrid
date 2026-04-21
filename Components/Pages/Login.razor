@@ -10,16 +10,7 @@
 <div class="login-page @(Theme.IsDark ? "dark" : "")"
      style="--primary:@Theme.PrimaryColor;--primary-dark:@Theme.PrimaryDark();--primary-15:@Theme.PrimaryAlpha(0.15);--primary-30:@Theme.PrimaryAlpha(0.30)">
 
-    <button class="theme-toggle" @onclick="ToggleDark" title="Toggle theme">
-        @if (Theme.IsDark)
-        {
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.1 3.1l1.1 1.1M11.8 11.8l1.1 1.1M12.9 3.1l-1.1 1.1M4.2 11.8l-1.1 1.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        }
-        else
-        {
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-        }
-    </button>
+    <GiwuThemeToggle/>
 
     <div class="login-center">
         <div class="login-card">
@@ -30,32 +21,23 @@
             <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator />
 
-                <div class="field-group">
-                    <label class="field-label">Email address</label>
-                    <InputText @bind-Value="loginModel.Email"
-                               class="field-input rounded"
-                               placeholder="you@company.com" />
-                    <ValidationMessage For="@(() => loginModel.Email)" />
-                </div>
+                <GiwuEmailField @bind-Value="loginModel.Email"
+                                Label="Email address"
+                                Required="true"
+                                For="@(() => loginModel.Email)"
+                                Class="mb-3" />
 
-                <div class="field-group">
-                    <label class="field-label">Password</label>
-                    <InputText @bind-Value="loginModel.Password"
-                               type="password"
-                               class="field-input rounded"
-                               placeholder="••••••••" />
-                    <ValidationMessage For="@(() => loginModel.Password)" />
-                </div>
+                <GiwuPasswordField @bind-Value="loginModel.Password"
+                                   Required="true"
+                                   For="@(() => loginModel.Password)"
+                                   Class="mb-2" />
 
                 <div class="form-row">
-                    <label class="remember-label">
-                        <InputCheckbox @bind-Value="loginModel.RememberMe" />
-                        <span>Remember me</span>
-                    </label>
+                    <GiwuCheckbox @bind-Value="loginModel.RememberMe" Label="Remember me" />
                     <a href="#" class="forgot-link">Forgot password?</a>
                 </div>
 
-                <button class="signin-btn" type="submit">Sign In</button>
+                <GiwuButton ButtonType="ButtonType.Submit" FullWidth="true" Class="signin-btn-mud">Sign In</GiwuButton>
             </EditForm>
 
             <div class="login-footer">
@@ -66,7 +48,7 @@
     </div>
 
     <div class="watermark-wrap">
-        <GiwuWatermark IsDark="@Theme.IsDark" />
+        <GiwuWatermark />
     </div>
 
 </div>
@@ -89,12 +71,6 @@
     {
         Auth.Login(loginModel.Email);
         Navigation.NavigateTo("/");
-    }
-
-    private async Task ToggleDark()
-    {
-        Theme.SetDark(!Theme.IsDark);
-        await ApplyTheme();
     }
 
     private Task ApplyTheme() =>

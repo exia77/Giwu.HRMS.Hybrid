@@ -17,7 +17,7 @@
             <div class="field-row">
                 <div class="field-label">Company Name</div>
                 <div class="field-body">
-                    <input class="s-input" @bind="editName" placeholder="e.g. ACME Corporation" />
+                    <GiwuTextField @bind-Value="editName" Placeholder="e.g. ACME Corporation" />
                 </div>
             </div>
 
@@ -49,7 +49,7 @@
                         </label>
                         @if (!string.IsNullOrEmpty(editLogoUrl))
                         {
-                            <button class="remove-btn" @onclick="RemoveLogo">Remove</button>
+                            <GiwuButton Kind="GiwuButtonKind.Danger" OnClick="@(_ => RemoveLogo())">Remove</GiwuButton>
                         }
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 Changes saved
             </div>
         }
-        <button class="save-btn" @onclick="SaveSettings">Save Changes</button>
+        <GiwuButton OnClick="@(async _ => await SaveSettings())">Save Changes</GiwuButton>
     </div>
 
 </div>

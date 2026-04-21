@@ -1,3 +1,11 @@
+@inject ThemeService Theme
+@implements IDisposable
+
+<MudThemeProvider IsDarkMode="@Theme.IsDark" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
 <Router AppAssembly="typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.DashboardLayout)" />
@@ -11,3 +19,8 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnInitialized() => Theme.OnChange += StateHasChanged;
+    public void Dispose() => Theme.OnChange -= StateHasChanged;
+}

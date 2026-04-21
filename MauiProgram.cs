@@ -1,5 +1,6 @@
 ﻿using Giwu.HRMS.Hybrid.Services;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 
 namespace Giwu.HRMS.Hybrid
 {
@@ -16,6 +17,7 @@ namespace Giwu.HRMS.Hybrid
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMudServices();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<ThemeService>();
 
