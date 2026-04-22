@@ -1,0 +1,107 @@
+@* ── View Department Dialog ── *@
+<MudDialog>
+    <TitleContent>
+        <div style="display:flex;align-items:center;gap:12px">
+            <div style="@($"width:38px;height:38px;border-radius:9px;background:{Department.IconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0")">
+                @((MarkupString)Department.Icon)
+            </div>
+            <div style="flex:1">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <MudText Typo="Typo.subtitle1" Style="font-weight:700;line-height:1.2">@Department.Name</MudText>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined"
+                             Style="height:20px;font-size:.65rem;border-color:var(--mud-palette-divider)">
+                        @Department.Code
+                    </MudChip>
+                </div>
+                <MudText Typo="Typo.caption" Style="opacity:.5">
+                    @Department.Headcount members · @Department.OpenRoles open roles
+                </MudText>
+            </div>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        @* Stat row *@
+        <div style="display:flex;gap:8px;margin-bottom:18px">
+            @foreach (var s in _stats)
+            {
+                <div style="flex:1;padding:10px 12px;border:1px solid var(--mud-palette-divider);border-radius:8px;text-align:center">
+                    <MudText Typo="Typo.body1" Style="font-weight:700;line-height:1">@s.Value</MudText>
+                    <MudText Typo="Typo.caption" Style="opacity:.5;font-size:.65rem">@s.Label</MudText>
+                </div>
+            }
+        </div>
+
+        @* Dept head *@
+        <MudText Typo="Typo.caption"
+                 Style="font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.5;display:block;margin-bottom:8px">
+            Department Head
+        </MudText>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--mud-palette-divider);border-radius:8px;margin-bottom:16px">
+            <MudAvatar Style="@($"width:34px;height:34px;font-size:.75rem;font-weight:700;background:{Department.HeadAvatarBg};color:{Department.HeadAvatarFg}")">
+                @Department.HeadInitials
+            </MudAvatar>
+            <div>
+                <MudText Typo="Typo.body2" Style="font-weight:600;line-height:1.2">@Department.Head</MudText>
+                <MudText Typo="Typo.caption" Style="opacity:.5">Department Head</MudText>
+            </div>
+        </div>
+
+        @* Members list *@
+        <MudText Typo="Typo.caption"
+                 Style="font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.5;display:block;margin-bottom:8px">
+            Members (@Department.Members.Count shown)
+        </MudText>
+        <div style="border:1px solid var(--mud-palette-divider);border-radius:8px;overflow:hidden;margin-bottom:16px">
+            @foreach (var (m, i) in Department.Members.Select((m, i) => (m, i)))
+            {
+                var border = i < Department.Members.Count - 1
+                    ? "border-bottom:1px solid var(--mud-palette-divider)"
+                    : "";
+                <div style="@($"display:flex;align-items:center;gap:10px;padding:9px 14px;{border}")">
+                    <MudAvatar Style="@($"width:28px;height:28px;font-size:.62rem;font-weight:700;background:{m.Bg};color:{m.Fg}")">
+                        @m.Initials
+                    </MudAvatar>
+                    <MudText Typo="Typo.body2" Style="flex:1">Member @(i + 1)</MudText>
+                    <MudChip T="string" Size="Size.Small" Color="Color.Success"
+                             Variant="Variant.Filled" Style="height:20px;font-size:.65rem">Active</MudChip>
+                </div>
+            }
+            @if (Department.Headcount > Department.Members.Count)
+            {
+                <div style="padding:9px 14px;text-align:center;border-top:1px solid var(--mud-palette-divider)">
+                    <MudText Typo="Typo.caption" Style="opacity:.45">
+                        +@(Department.Headcount - Department.Members.Count) more members
+                    </MudText>
+                </div>
+            }
+        </div>
+
+        @* Budget bar *@
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <MudText Typo="Typo.caption" Style="opacity:.5">Budget utilization</MudText>
+            <MudText Typo="Typo.caption" Style="@($"font-weight:600;color:{Department.Color}")">@Department.BudgetPct%</MudText>
+        </div>
+        <MudProgressLinear Value="@Department.BudgetPct" Color="Color.Primary"
+                           Rounded="true" Size="Size.Medium" />
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Style="text-transform:none" OnClick="() => MudDialog.Close()">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public Departments.Department Department { get; set; } = default!;
+
+    record StatItem(string Label, string Value);
+
+    IEnumerable<StatItem> _stats => new[]
+    {
+        new StatItem("Members",    Department.Headcount.ToString()),
+        new StatItem("Open roles", Department.OpenRoles.ToString()),
+        new StatItem("On leave",   Department.OnLeave.ToString()),
+        new StatItem("Budget",     $"{Department.BudgetPct}%"),
+    };
+}

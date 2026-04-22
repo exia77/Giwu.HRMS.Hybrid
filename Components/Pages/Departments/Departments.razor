@@ -1,0 +1,263 @@
+@page "/departments"
+@layout DashboardLayout
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+@using Pages.Departments.Components
+
+@* ── Toolbar ── *@
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+    <MudTextField @bind-Value="_search"
+                  Placeholder="Search departments…"
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Outlined.Search"
+                  Variant="Variant.Outlined"
+                  Margin="Margin.Dense"
+                  Style="max-width:280px;flex:1"
+                  Immediate="true" />
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Outlined.Add"
+               Size="Size.Small"
+               Style="border-radius:8px;text-transform:none"
+               OnClick="OpenAddDialog">
+        New department
+    </MudButton>
+</div>
+
+@* ── Stat cards ── *@
+<MudGrid Spacing="2" Style="margin-bottom:20px">
+    @foreach (var s in _stats)
+    {
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Elevation="0"
+                      Style="border:1px solid var(--mud-palette-divider);border-radius:10px;padding:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <MudText Typo="Typo.caption" Style="opacity:.55">@s.Label</MudText>
+                    <div style="@($"width:30px;height:30px;border-radius:8px;background:{s.IconBg};display:flex;align-items:center;justify-content:center")">
+                        @((MarkupString)s.Icon)
+                    </div>
+                </div>
+                <MudText Typo="Typo.h5" Style="font-weight:700;line-height:1">@s.Value</MudText>
+                <MudText Typo="Typo.caption" Style="@($"color:{s.ChangeColor};margin-top:4px")">@s.Change</MudText>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+@* ── Department cards ── *@
+<MudGrid Spacing="2">
+    @foreach (var d in FilteredDepts)
+    {
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="0"
+                      Style="border:1px solid var(--mud-palette-divider);border-radius:10px;overflow:hidden;transition:box-shadow .15s"
+                      @onmouseenter="() => d.Hover = true"
+                      @onmouseleave="() => d.Hover = false">
+
+                <div style="@($"height:4px;background:{d.Color}")"></div>
+
+                <div style="padding:16px">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <div style="@($"width:38px;height:38px;border-radius:9px;background:{d.IconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0")">
+                                @((MarkupString)d.Icon)
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.body1" Style="font-weight:700;line-height:1.2">@d.Name</MudText>
+                                <MudText Typo="Typo.caption" Style="opacity:.45">@d.Code</MudText>
+                            </div>
+                        </div>
+                        <MudMenu Icon="@Icons.Material.Outlined.MoreVert" Size="Size.Small"
+                                 AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Dense="true">
+                            <MudMenuItem OnClick="() => OpenViewDialog(d)">
+                                <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+                                    <MudIcon Icon="@Icons.Material.Outlined.OpenInNew" Style="font-size:15px;opacity:.6" />
+                                    View members
+                                </div>
+                            </MudMenuItem>
+                            <MudMenuItem OnClick="() => OpenEditDialog(d)">
+                                <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+                                    <MudIcon Icon="@Icons.Material.Outlined.Edit" Style="font-size:15px;opacity:.6" />
+                                    Edit
+                                </div>
+                            </MudMenuItem>
+                            <MudDivider />
+                            <MudMenuItem OnClick="() => OpenDeleteDialog(d)">
+                                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#C62828">
+                                    <MudIcon Icon="@Icons.Material.Outlined.DeleteOutline" Style="font-size:15px;color:#C62828" />
+                                    Delete
+                                </div>
+                            </MudMenuItem>
+                        </MudMenu>
+                    </div>
+
+                    <div style="display:flex;gap:6px;margin-bottom:14px">
+                        <div style="flex:1;padding:8px 10px;border-radius:8px;background:var(--mud-palette-background-grey);text-align:center">
+                            <MudText Typo="Typo.body2" Style="font-weight:700;line-height:1.1">@d.Headcount</MudText>
+                            <MudText Typo="Typo.caption" Style="opacity:.5;font-size:.65rem">Members</MudText>
+                        </div>
+                        <div style="flex:1;padding:8px 10px;border-radius:8px;background:var(--mud-palette-background-grey);text-align:center">
+                            <MudText Typo="Typo.body2" Style="font-weight:700;line-height:1.1">@d.OpenRoles</MudText>
+                            <MudText Typo="Typo.caption" Style="opacity:.5;font-size:.65rem">Open roles</MudText>
+                        </div>
+                        <div style="flex:1;padding:8px 10px;border-radius:8px;background:var(--mud-palette-background-grey);text-align:center">
+                            <MudText Typo="Typo.body2" Style="font-weight:700;line-height:1.1">@d.OnLeave</MudText>
+                            <MudText Typo="Typo.caption" Style="opacity:.5;font-size:.65rem">On leave</MudText>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                        <div style="display:flex;align-items:center;gap:6px">
+                            <MudAvatar Style="@($"width:22px;height:22px;font-size:.58rem;font-weight:700;background:{d.HeadAvatarBg};color:{d.HeadAvatarFg}")">
+                                @d.HeadInitials
+                            </MudAvatar>
+                            <MudText Typo="Typo.caption" Style="opacity:.6">@d.Head</MudText>
+                        </div>
+                        <div style="display:flex;align-items:center">
+                            @for (int i = 0; i < Math.Min(d.Members.Count, 4); i++)
+                            {
+                                var m  = d.Members[i];
+                                var ml = i == 0 ? "0px" : "-8px";
+                                var zi = 10 - i;
+                                <MudAvatar Style="@($"width:24px;height:24px;font-size:.58rem;font-weight:700;background:{m.Bg};color:{m.Fg};border:2px solid var(--mud-palette-background);margin-left:{ml};z-index:{zi}")">
+                                    @m.Initials
+                                </MudAvatar>
+                            }
+                            @if (d.Headcount > 4)
+                            {
+                                <MudAvatar Style="width:24px;height:24px;font-size:.58rem;background:var(--mud-palette-background-grey);border:2px solid var(--mud-palette-background);margin-left:-8px;z-index:5">
+                                    +@(d.Headcount - 4)
+                                </MudAvatar>
+                            }
+                        </div>
+                    </div>
+
+                    <div style="border-top:1px solid var(--mud-palette-divider);padding-top:12px">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                            <MudText Typo="Typo.caption" Style="opacity:.5">Budget utilization</MudText>
+                            <MudText Typo="Typo.caption" Style="@($"font-weight:600;color:{d.Color}")">@d.BudgetPct%</MudText>
+                        </div>
+                        <MudProgressLinear Value="@d.BudgetPct" Color="Color.Primary"
+                                           Rounded="true" Size="Size.Small" />
+                    </div>
+                </div>
+            </MudPaper>
+        </MudItem>
+    }
+</MudGrid>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-bottom:60px">
+    <MudText Typo="Typo.caption" Style="opacity:.55">
+        Showing @FilteredDepts.Count() of @_departments.Count departments
+    </MudText>
+    <MudPagination Count="1" Variant="Variant.Outlined" Size="Size.Small"
+                   BoundaryCount="1" MiddleCount="3" />
+</div>
+
+@code {
+    string _search = "";
+
+    record StatCard(string Label, string Value, string Change, string ChangeColor, string Icon, string IconBg);
+    public record MemberAvatar(string Initials, string Bg, string Fg);
+
+    public class Department
+    {
+        public string             Name         { get; set; } = "";
+        public string             Code         { get; set; } = "";
+        public string             Head         { get; set; } = "";
+        public string             HeadInitials { get; set; } = "";
+        public string             HeadAvatarBg { get; set; } = "";
+        public string             HeadAvatarFg { get; set; } = "";
+        public int                Headcount    { get; set; }
+        public int                OpenRoles    { get; set; }
+        public int                OnLeave      { get; set; }
+        public double             BudgetPct    { get; set; }
+        public string             Color        { get; set; } = "";
+        public string             IconBg       { get; set; } = "";
+        public string             Icon         { get; set; } = "";
+        public List<MemberAvatar> Members      { get; set; } = new();
+        public bool               Hover        { get; set; }
+    }
+
+    readonly StatCard[] _stats =
+    [
+        new("Total departments", "6",   "No change",     "var(--mud-palette-text-secondary)",
+            """<svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="#185FA5" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="#185FA5" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="#185FA5" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="#185FA5" stroke-width="1.3"/></svg>""", "#E6F1FB"),
+        new("Total headcount",   "248", "+4 this month", "var(--mud-palette-success)",
+            """<svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5" stroke="#085041" stroke-width="1.3"/><circle cx="11" cy="5" r="2.5" stroke="#085041" stroke-width="1.3"/><path d="M1 14c0-3 2-4.5 5-4.5" stroke="#085041" stroke-width="1.3" stroke-linecap="round"/><path d="M11 9.5c2 0 4 1 4 4" stroke="#085041" stroke-width="1.3" stroke-linecap="round"/></svg>""", "#E1F5EE"),
+        new("Open positions",    "7",   "3 urgent",      "var(--mud-palette-warning)",
+            """<svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="#633806" stroke-width="1.3"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="#633806" stroke-width="1.3"/><line x1="8" y1="7" x2="8" y2="10" stroke="#633806" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="8.5" x2="9.5" y2="8.5" stroke="#633806" stroke-width="1.3" stroke-linecap="round"/></svg>""", "#FAEEDA"),
+        new("Avg team size",     "41",  "Balanced",      "var(--mud-palette-info)",
+            """<svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M2 12l4-4 3 3 5-6" stroke="#0C447C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>""", "#E6F1FB"),
+    ];
+
+    readonly List<Department> _departments = new()
+    {
+        new() { Name="Engineering", Code="ENG-01", Head="Maria Reyes",    HeadInitials="MR", HeadAvatarBg="#E6F1FB", HeadAvatarFg="#0C447C", Headcount=74, OpenRoles=3, OnLeave=5, BudgetPct=78, Color="#185FA5", IconBg="#E6F1FB", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 4.5L8 2l6 2.5v4c0 3-2.5 5.5-6 6-3.5-.5-6-3-6-6v-4z" stroke="#185FA5" stroke-width="1.3"/><path d="M5.5 8l2 2 3-3" stroke="#185FA5" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>""", Members=new(){ new("KS","#EEEDFE","#3C3489"), new("JR","#E6F1FB","#0C447C"), new("DU","#FCEBEB","#791F1F"), new("AL","#E1F5EE","#085041") } },
+        new() { Name="Sales",       Code="SAL-02", Head="Karl Santos",    HeadInitials="KS", HeadAvatarBg="#EEEDFE", HeadAvatarFg="#3C3489", Headcount=52, OpenRoles=2, OnLeave=3, BudgetPct=61, Color="#3C3489", IconBg="#EEEDFE", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 12l3-4 3 2 3-5 3 3" stroke="#3C3489" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="4" r="1.5" fill="#3C3489"/></svg>""",                Members=new(){ new("LT","#EEEDFE","#3C3489"), new("EB","#FAEEDA","#633806"), new("RC","#FCEBEB","#791F1F") } },
+        new() { Name="Finance",     Code="FIN-03", Head="Nina Garcia",    HeadInitials="NG", HeadAvatarBg="#E1F5EE", HeadAvatarFg="#085041", Headcount=38, OpenRoles=1, OnLeave=2, BudgetPct=55, Color="#085041", IconBg="#E1F5EE", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#085041" stroke-width="1.3"/><line x1="1.5" y1="6.5" x2="14.5" y2="6.5" stroke="#085041" stroke-width="1.3"/><line x1="4.5" y1="10" x2="7" y2="10" stroke="#085041" stroke-width="1.3" stroke-linecap="round"/></svg>""",           Members=new(){ new("AL","#E1F5EE","#085041"), new("NG","#E1F5EE","#085041"), new("MR","#E6F1FB","#0C447C") } },
+        new() { Name="Operations",  Code="OPS-04", Head="Marco Sy",       HeadInitials="MS", HeadAvatarBg="#FAEEDA", HeadAvatarFg="#633806", Headcount=48, OpenRoles=0, OnLeave=4, BudgetPct=82, Color="#633806", IconBg="#FAEEDA", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2" stroke="#633806" stroke-width="1.3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4" stroke="#633806" stroke-width="1.3" stroke-linecap="round"/></svg>""", Members=new(){ new("BT","#FAEEDA","#633806"), new("MS","#FAEEDA","#633806"), new("JR","#E6F1FB","#0C447C"), new("KS","#EEEDFE","#3C3489") } },
+        new() { Name="Marketing",   Code="MKT-05", Head="Rosa Cruz",      HeadInitials="RC", HeadAvatarBg="#FCEBEB", HeadAvatarFg="#791F1F", Headcount=36, OpenRoles=1, OnLeave=1, BudgetPct=47, Color="#791F1F", IconBg="#FCEBEB", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2L9.5 6h4.5l-3.6 2.6 1.4 4.4L8 10.5 4.2 13l1.4-4.4L2 6h4.5z" stroke="#791F1F" stroke-width="1.3" stroke-linejoin="round"/></svg>""",                                                                                                                             Members=new(){ new("RC","#FCEBEB","#791F1F"), new("LT","#EEEDFE","#3C3489"), new("SP","#EAF3DE","#3B6D11") } },
+        new() { Name="HR",          Code="HR-06",  Head="Sofia Pascual",  HeadInitials="SP", HeadAvatarBg="#EAF3DE", HeadAvatarFg="#3B6D11", Headcount=14, OpenRoles=0, OnLeave=0, BudgetPct=33, Color="#3B6D11", IconBg="#EAF3DE", Icon="""<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" stroke="#3B6D11" stroke-width="1.3"/><path d="M2 14.5c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round"/></svg>""",                                                                                                                            Members=new(){ new("SP","#EAF3DE","#3B6D11"), new("NG","#E1F5EE","#085041") } },
+    };
+
+    IEnumerable<Department> FilteredDepts => _departments.Where(d =>
+        string.IsNullOrEmpty(_search) ||
+        d.Name.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+        d.Head.Contains(_search, StringComparison.OrdinalIgnoreCase) ||
+        d.Code.Contains(_search, StringComparison.OrdinalIgnoreCase)
+    );
+
+    static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small, FullWidth = true,
+        CloseButton = true, BackdropClick = false, CloseOnEscapeKey = true,
+    };
+
+    static readonly DialogOptions _deleteOptions = new()
+    {
+        MaxWidth = MaxWidth.ExtraSmall, FullWidth = true,
+        CloseButton = true, BackdropClick = false, CloseOnEscapeKey = true,
+    };
+
+    async Task OpenAddDialog()
+    {
+        var d = await DialogService.ShowAsync<AddDepartmentDialog>(string.Empty, _dialogOptions);
+        if ((await d.Result) is { Canceled: false })
+            Snackbar.Add("Department created successfully.", Severity.Success);
+    }
+
+    async Task OpenViewDialog(Department d)
+    {
+        var p = new DialogParameters<ViewDepartmentDialog> { { x => x.Department, d } };
+        await DialogService.ShowAsync<ViewDepartmentDialog>(string.Empty, p, _dialogOptions);
+    }
+
+    async Task OpenEditDialog(Department d)
+    {
+        var p = new DialogParameters<EditDepartmentDialog> { { x => x.Department, d } };
+        var dlg = await DialogService.ShowAsync<EditDepartmentDialog>(string.Empty, p, _dialogOptions);
+        if ((await dlg.Result) is { Canceled: false })
+            Snackbar.Add("Department updated.", Severity.Success);
+    }
+
+    async Task OpenDeleteDialog(Department d)
+    {
+        var p = new DialogParameters<DeleteDepartmentDialog>
+        {
+            { x => x.DeptName,  d.Name      },
+            { x => x.Headcount, d.Headcount },
+            { x => x.Color,     d.Color     },
+            { x => x.IconBg,    d.IconBg    },
+            { x => x.Icon,      d.Icon      },
+        };
+        var dlg = await DialogService.ShowAsync<DeleteDepartmentDialog>(string.Empty, p, _deleteOptions);
+        if ((await dlg.Result) is { Canceled: false })
+        {
+            _departments.Remove(d);
+            Snackbar.Add($"{d.Name} department removed.", Severity.Error);
+            StateHasChanged();
+        }
+    }
+}

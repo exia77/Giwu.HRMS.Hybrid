@@ -1,0 +1,346 @@
+﻿@page "/employees"
+@layout DashboardLayout
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+@using Pages.Employees.Components
+
+@* ── Toolbar row ── *@
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+
+    <MudTextField @bind-Value="_search"
+                  Placeholder="Search name, role, dept…"
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Outlined.Search"
+                  Variant="Variant.Outlined"
+                  Margin="Margin.Dense"
+                  Style="max-width:320px;flex:1"
+                  Immediate="true" />
+
+    <MudSelect @bind-Value="_filterDept"
+               Placeholder="Department"
+               Variant="Variant.Outlined"
+               Margin="Margin.Dense"
+               Style="max-width:180px">
+        <MudSelectItem Value="@("")">All departments</MudSelectItem>
+        @foreach (var d in _deptOptions)
+        {
+            <MudSelectItem Value="@d">@d</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudSelect @bind-Value="_filterStatus"
+               Placeholder="Status"
+               Variant="Variant.Outlined"
+               Margin="Margin.Dense"
+               Style="max-width:150px">
+        <MudSelectItem Value="@("")">All statuses</MudSelectItem>
+        <MudSelectItem Value="@("Active")">Active</MudSelectItem>
+        <MudSelectItem Value="@("Probation")">Probation</MudSelectItem>
+        <MudSelectItem Value="@("Onboarding")">Onboarding</MudSelectItem>
+        <MudSelectItem Value="@("Inactive")">Inactive</MudSelectItem>
+    </MudSelect>
+
+    <MudSpacer />
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Outlined.PersonAdd"
+               Size="Size.Small"
+               Style="border-radius:8px;text-transform:none"
+               OnClick="OpenAddDialog">
+        Add employee
+    </MudButton>
+</div>
+
+@* ── Summary chips ── *@
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+    @foreach (var s in _summaryChips)
+    {
+        <div style="@($"display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;border:1px solid var(--mud-palette-divider);background:{s.Bg}")">
+            <div style="@($"width:7px;height:7px;border-radius:50%;background:{s.Dot}")"></div>
+            <MudText Typo="Typo.caption" Style="font-weight:500">@s.Label</MudText>
+            <MudText Typo="Typo.caption" Style="opacity:.6">@s.Count</MudText>
+        </div>
+    }
+</div>
+
+@* ── Table ── *@
+<MudPaper Elevation="0"
+          Style="border:1px solid var(--mud-palette-divider);border-radius:10px;overflow:hidden">
+    <MudTable Items="FilteredEmployees" Dense="true" Hover="true"
+              Breakpoint="Breakpoint.Sm"
+              Style="border-radius:10px"
+              HeaderClass="table-header"
+              Elevation="0">
+        <HeaderContent>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em">Employee</MudTh>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em">Department</MudTh>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em">Role</MudTh>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em">Status</MudTh>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em">Join Date</MudTh>
+            <MudTh Style="font-size:.72rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em"></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <MudAvatar Style="@($"background:{context.AvatarBg};color:{context.AvatarFg};font-size:.72rem;width:32px;height:32px;font-weight:600")">
+                        @context.Initials
+                    </MudAvatar>
+                    <div>
+                        <MudText Typo="Typo.body2" Style="font-weight:600;line-height:1.2">@context.Name</MudText>
+                        <MudText Typo="Typo.caption" Style="opacity:.45">@context.Email</MudText>
+                    </div>
+                </div>
+            </MudTd>
+            <MudTd><MudText Typo="Typo.body2">@context.Dept</MudText></MudTd>
+            <MudTd><MudText Typo="Typo.body2" Style="opacity:.7">@context.Role</MudText></MudTd>
+            <MudTd>
+                <MudChip T="string" Size="Size.Small" Color="@context.ChipColor"
+                         Variant="Variant.Filled"
+                         Style="height:22px;font-size:.68rem">
+                    @context.Status
+                </MudChip>
+            </MudTd>
+            <MudTd><MudText Typo="Typo.body2" Style="opacity:.6">@context.JoinDate</MudText></MudTd>
+            <MudTd>
+                <div style="display:flex;gap:2px">
+                    @* View profile *@
+                    <MudIconButton Icon="@Icons.Material.Outlined.OpenInNew"
+                                   Size="Size.Small" Title="View profile"
+                                   OnClick="() => OpenViewDialog(context)" />
+                    @* Edit *@
+                    <MudIconButton Icon="@Icons.Material.Outlined.Edit"
+                                   Size="Size.Small" Title="Edit"
+                                   OnClick="() => OpenEditDialog(context)" />
+                    @* Delete *@
+                    <MudIconButton Icon="@Icons.Material.Outlined.DeleteOutline"
+                                   Size="Size.Small" Title="Remove"
+                                   Color="Color.Error"
+                                   OnClick="() => OpenDeleteDialog(context)" />
+                </div>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@* ── Pagination row ── *@
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;padding-bottom:60px">
+    <MudText Typo="Typo.caption" Style="opacity:.55">
+        Showing @FilteredEmployees.Count() of @_employees.Count employees
+    </MudText>
+    <MudPagination Count="4" Variant="Variant.Outlined" Size="Size.Small"
+                   BoundaryCount="1" MiddleCount="3" />
+</div>
+
+@code {
+    [Inject] NavigationManager Navigation { get; set; } = default!;
+
+    string _search = "";
+    string _filterDept = "";
+    string _filterStatus = "";
+
+    // ── Data model ──────────────────────────────────────────────────────────
+    class Employee
+    {
+        public string Initials { get; set; } = "";
+        public string AvatarBg { get; set; } = "";
+        public string AvatarFg { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string Role { get; set; } = "";
+        public string Dept { get; set; } = "";
+        public string Status { get; set; } = "";
+        public Color ChipColor { get; set; }
+        public string Email { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public string JoinDate { get; set; } = "";
+        public bool Hover { get; set; }
+    }
+
+    record SummaryChip(string Label, int Count, string Dot, string Bg);
+
+    readonly List<Employee> _employees = new()
+    {
+        new() { Initials="MR", AvatarBg="#E6F1FB", AvatarFg="#0C447C", Name="Maria Reyes",     Role="Senior Engineer",      Dept="Engineering", Status="Active",     ChipColor=Color.Success, Email="m.reyes@corp.ph",    Phone="+63 917 111 0001", JoinDate="Jan 10, 2022" },
+        new() { Initials="KS", AvatarBg="#EEEDFE", AvatarFg="#3C3489", Name="Karl Santos",     Role="Account Executive",    Dept="Sales",       Status="Active",     ChipColor=Color.Success, Email="k.santos@corp.ph",   Phone="+63 917 111 0002", JoinDate="Mar 5, 2021"  },
+        new() { Initials="AL", AvatarBg="#E1F5EE", AvatarFg="#085041", Name="Ana Lim",         Role="Finance Analyst",      Dept="Finance",     Status="Probation",  ChipColor=Color.Warning, Email="a.lim@corp.ph",      Phone="+63 917 111 0003", JoinDate="Mar 20, 2025" },
+        new() { Initials="BT", AvatarBg="#FAEEDA", AvatarFg="#633806", Name="Ben Torres",      Role="Ops Coordinator",      Dept="Operations",  Status="Onboarding", ChipColor=Color.Info,    Email="b.torres@corp.ph",   Phone="+63 917 111 0004", JoinDate="Apr 1, 2025"  },
+        new() { Initials="RC", AvatarBg="#FCEBEB", AvatarFg="#791F1F", Name="Rosa Cruz",       Role="Brand Manager",        Dept="Marketing",   Status="Active",     ChipColor=Color.Success, Email="r.cruz@corp.ph",     Phone="+63 917 111 0005", JoinDate="Jul 12, 2020" },
+        new() { Initials="JR", AvatarBg="#E6F1FB", AvatarFg="#0C447C", Name="Jose Ramos",      Role="DevOps Engineer",      Dept="Engineering", Status="Active",     ChipColor=Color.Success, Email="j.ramos@corp.ph",    Phone="+63 917 111 0006", JoinDate="Sep 3, 2019"  },
+        new() { Initials="LT", AvatarBg="#EEEDFE", AvatarFg="#3C3489", Name="Liza Tan",        Role="Sales Representative", Dept="Sales",       Status="Active",     ChipColor=Color.Success, Email="l.tan@corp.ph",      Phone="+63 917 111 0007", JoinDate="Feb 14, 2023" },
+        new() { Initials="MS", AvatarBg="#FAEEDA", AvatarFg="#633806", Name="Marco Sy",        Role="Logistics Head",       Dept="Operations",  Status="Active",     ChipColor=Color.Success, Email="m.sy@corp.ph",       Phone="+63 917 111 0008", JoinDate="Nov 22, 2018" },
+        new() { Initials="NG", AvatarBg="#E1F5EE", AvatarFg="#085041", Name="Nina Garcia",     Role="Payroll Specialist",   Dept="Finance",     Status="Active",     ChipColor=Color.Success, Email="n.garcia@corp.ph",   Phone="+63 917 111 0009", JoinDate="Jun 8, 2021"  },
+        new() { Initials="DU", AvatarBg="#FCEBEB", AvatarFg="#791F1F", Name="Danny Uy",        Role="UX Designer",          Dept="Engineering", Status="Active",     ChipColor=Color.Success, Email="d.uy@corp.ph",       Phone="+63 917 111 0010", JoinDate="Aug 17, 2022" },
+        new() { Initials="SP", AvatarBg="#EAF3DE", AvatarFg="#3B6D11", Name="Sofia Pascual",   Role="Recruiter",            Dept="HR",          Status="Active",     ChipColor=Color.Success, Email="s.pascual@corp.ph",  Phone="+63 917 111 0011", JoinDate="Oct 30, 2023" },
+        new() { Initials="EB", AvatarBg="#FAEEDA", AvatarFg="#633806", Name="Eduardo Bautista",Role="Sales Manager",        Dept="Sales",       Status="Inactive",   ChipColor=Color.Default, Email="e.bautista@corp.ph", Phone="+63 917 111 0012", JoinDate="Apr 5, 2017"  },
+    };
+
+    readonly string[] _deptOptions = { "Engineering", "Sales", "Finance", "Operations", "Marketing", "HR" };
+
+    readonly SummaryChip[] _summaryChips =
+    {
+        new("Active",     198, "#4caf50", "#4caf5012"),
+        new("Probation",   18, "#ff9800", "#ff980012"),
+        new("Onboarding",  16, "#2196f3", "#2196f312"),
+        new("Inactive",    16, "#9e9e9e", "#9e9e9e12"),
+    };
+
+    IEnumerable<Employee> FilteredEmployees => _employees.Where(e =>
+        (string.IsNullOrEmpty(_search) || e.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
+                                              || e.Role.Contains(_search, StringComparison.OrdinalIgnoreCase)
+                                              || e.Dept.Contains(_search, StringComparison.OrdinalIgnoreCase)) &&
+        (string.IsNullOrEmpty(_filterDept) || e.Dept == _filterDept) &&
+        (string.IsNullOrEmpty(_filterStatus) || e.Status == _filterStatus)
+    );
+
+    // ── Dialog options ───────────────────────────────────────────────────────
+    static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true,
+        CloseButton = true,
+        BackdropClick = false,
+        CloseOnEscapeKey = true,
+        NoHeader = false,
+    };
+
+    // ════════════════════════════════════════════════════════════════════════
+    // ADD EMPLOYEE
+    // ════════════════════════════════════════════════════════════════════════
+    async Task OpenAddDialog()
+    {
+        var dialog = await DialogService.ShowAsync<AddEmployeeDialog>(
+            string.Empty, _dialogOptions);
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false })
+        {
+            // TODO: call your service to persist the new employee
+            Snackbar.Add("Employee added successfully.", Severity.Success);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    // VIEW PROFILE
+    // ════════════════════════════════════════════════════════════════════════
+    async Task OpenViewDialog(Employee e)
+    {
+        var profile = new ViewEmployeeDialog.EmployeeProfile
+        {
+            Initials = e.Initials,
+            AvatarBg = e.AvatarBg,
+            AvatarFg = e.AvatarFg,
+            Name = e.Name,
+            Role = e.Role,
+            Dept = e.Dept,
+            Status = e.Status,
+            ChipColor = e.ChipColor,
+            Email = e.Email,
+            Phone = e.Phone,
+            JoinDate = e.JoinDate,
+            EmploymentType = "Full-time",
+            Salary = "₱45,000.00",
+            Address = "Bacoor, Cavite",
+            BirthDate = "Jan 1, 1990",
+            Gender = "—",
+        };
+
+        var parameters = new DialogParameters<ViewEmployeeDialog>
+        {
+            { x => x.Employee, profile }
+        };
+
+        var dialog = await DialogService.ShowAsync<ViewEmployeeDialog>(
+            string.Empty, parameters, _dialogOptions);
+
+        var result = await dialog.Result;
+
+        // If user clicked "Edit Profile" from inside View dialog
+        if (result is { Canceled: false, Data: "edit" })
+            await OpenEditDialog(e);
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    // EDIT PROFILE
+    // ════════════════════════════════════════════════════════════════════════
+    async Task OpenEditDialog(Employee e)
+    {
+        var nameParts = e.Name.Split(' ', 2);
+
+        var editModel = new EditEmployeeDialog.EmployeeEditModel
+        {
+            Initials = e.Initials,
+            AvatarBg = e.AvatarBg,
+            AvatarFg = e.AvatarFg,
+            Name = e.Name,
+            FirstName = nameParts.Length > 0 ? nameParts[0] : "",
+            LastName = nameParts.Length > 1 ? nameParts[1] : "",
+            Email = e.Email,
+            Phone = e.Phone,
+            Department = e.Dept,
+            Role = e.Role,
+            Status = e.Status,
+            EmploymentType = "Full-time",
+            Salary = 45000m,
+            StartDate = DateTime.Today,
+        };
+
+        var parameters = new DialogParameters<EditEmployeeDialog>
+        {
+            { x => x.Employee, editModel }
+        };
+
+        var dialog = await DialogService.ShowAsync<EditEmployeeDialog>(
+            string.Empty, parameters, _dialogOptions);
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false })
+        {
+            // TODO: call your service to persist the updated employee
+            Snackbar.Add("Employee profile updated.", Severity.Success);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════
+    // DELETE
+    // ════════════════════════════════════════════════════════════════════════
+    async Task OpenDeleteDialog(Employee e)
+    {
+        var target = new DeleteEmployeeDialog.DeleteTarget
+        {
+            Initials = e.Initials,
+            AvatarBg = e.AvatarBg,
+            AvatarFg = e.AvatarFg,
+            Name = e.Name,
+            Role = e.Role,
+            Dept = e.Dept,
+            Status = e.Status,
+            ChipColor = e.ChipColor,
+            Email = e.Email,
+        };
+
+        var parameters = new DialogParameters<DeleteEmployeeDialog>
+        {
+            { x => x.Employee, target }
+        };
+
+        var deleteOptions = new DialogOptions
+        {
+            MaxWidth = MaxWidth.ExtraSmall,
+            FullWidth = true,
+            CloseButton = true,
+            BackdropClick = false,
+        };
+
+        var dialog = await DialogService.ShowAsync<DeleteEmployeeDialog>(
+            string.Empty, parameters, deleteOptions);
+
+        var result = await dialog.Result;
+        if (result is { Canceled: false })
+        {
+            // TODO: call your service to delete the employee
+            _employees.Remove(e);
+            Snackbar.Add($"{e.Name} has been removed.", Severity.Error);
+            StateHasChanged();
+        }
+    }
+}

@@ -197,20 +197,17 @@ nav { padding: 12px 8px; flex: 1; }
     right: 5px;
 }
 
-.dash-content { padding: 18px 20px; flex: 1; overflow: auto; }
+.dash-content {
+    padding: 18px 20px 80px 20px; /* extra bottom padding */
+    flex: 1;
+    overflow: auto;
+}
 
 .dash-watermark {
     position: absolute;
     bottom: 14px;
     right: 14px;
     opacity: 0.6;
-    pointer-events: none;
-}
-.watermark-wrap {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    opacity: 0.75;
     pointer-events: none;
 }
 
@@ -226,4 +223,5 @@ nav { padding: 12px 8px; flex: 1; }
     right: -90px;
     opacity: 0.75;
     pointer-events: none;
+    z-index: 9999;
 }

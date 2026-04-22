@@ -1,0 +1,110 @@
+@* ── Edit Department Dialog ── *@
+<MudDialog>
+    <TitleContent>
+        <div style="display:flex;align-items:center;gap:10px">
+            <div style="@($"width:32px;height:32px;border-radius:8px;background:{Department.IconBg};display:flex;align-items:center;justify-content:center")">
+                @((MarkupString)Department.Icon)
+            </div>
+            <div>
+                <MudText Typo="Typo.subtitle1" Style="font-weight:600;line-height:1.2">Edit Department</MudText>
+                <MudText Typo="Typo.caption" Style="opacity:.55">@Department.Name</MudText>
+            </div>
+        </div>
+    </TitleContent>
+
+    <DialogContent>
+        <MudForm @ref="_form" @bind-IsValid="_isValid">
+
+            <MudText Typo="Typo.caption"
+                     Style="font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.5;margin-bottom:10px;display:block">
+                Basic Information
+            </MudText>
+            <MudGrid Spacing="2" Style="margin-bottom:16px">
+                <MudItem xs="12" sm="8">
+                    <MudTextField @bind-Value="_name" Label="Department name"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField @bind-Value="_code" Label="Code"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="_description" Label="Description"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" Lines="2" />
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Style="margin-bottom:16px" />
+
+            <MudText Typo="Typo.caption"
+                     Style="font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.5;margin-bottom:10px;display:block">
+                Leadership & Budget
+            </MudText>
+            <MudGrid Spacing="2">
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="_head" Label="Department head"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="_budget" Label="Monthly budget (₱)"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" Format="N2" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="_headcountTarget" Label="Headcount target"
+                                     Variant="Variant.Outlined" Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @bind-Value="_status" Label="Status"
+                               Variant="Variant.Outlined" Margin="Margin.Dense">
+                        <MudSelectItem Value="@("Active")">Active</MudSelectItem>
+                        <MudSelectItem Value="@("Inactive")">Inactive</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Style="text-transform:none" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                   Style="text-transform:none;border-radius:8px"
+                   StartIcon="@Icons.Material.Outlined.Save"
+                   OnClick="Save" Disabled="!_isValid">
+            Save Changes
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public Departments.Department Department { get; set; } = default!;
+
+    MudForm _form = default!;
+    bool _isValid;
+
+    string  _name            = "";
+    string  _code            = "";
+    string  _description     = "";
+    string  _head            = "";
+    decimal _budget          = 0;
+    int     _headcountTarget = 0;
+    string  _status          = "Active";
+
+    protected override void OnParametersSet()
+    {
+        _name            = Department.Name;
+        _code            = Department.Code;
+        _head            = Department.Head;
+        _headcountTarget = Department.Headcount;
+        _status          = "Active";
+    }
+
+    async Task Save()
+    {
+        await _form.Validate();
+        if (_isValid) MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}
